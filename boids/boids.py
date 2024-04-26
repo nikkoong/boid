@@ -3,6 +3,7 @@ import math
 import random
 from reward import Reward
 from slider import Slider
+import csv
 
 # Constants
 WIDTH, HEIGHT = 1000, 900
@@ -13,6 +14,7 @@ NEIGHBOR_RADIUS = 50
 AVOID_RADIUS = 15
 ATTRACT_RADIUS = 150
 PADDING = 40
+SEPARATION_COEFF = 0.01
 
 # Colors
 WHITE = (255, 255, 255)
@@ -97,8 +99,8 @@ class Boid:
             if distance(self , boid) < AVOID_RADIUS:
                 move_x += self.x - boid.x
                 move_y += self.y - boid.y
-        self.velocity_x += move_x * 0.1
-        self.velocity_y += move_y * 0.1
+        self.velocity_x += move_x * SEPARATION_COEFF
+        self.velocity_y += move_y * SEPARATION_COEFF
 
     def attract(self, reward):
         if reward:
@@ -137,7 +139,7 @@ def draw_text(screen, text, position, size=30, color=WHITE, font_name = "Monospa
 
 # Main function
 def main():
-    global ALIGN_COEFF, COHESION_COEFF, REWARD_COEFF, ATTRACT_RADIUS, AVOID_RADIUS, NEIGHBOR_RADIUS
+    global ALIGN_COEFF, COHESION_COEFF, REWARD_COEFF, ATTRACT_RADIUS, AVOID_RADIUS, NEIGHBOR_RADIUS, BOID_RADIUS, SEPARATION_COEFF
     counter = 0
     boids = [Boid(random.randint(0,WIDTH-PADDING), random.randint(0, HEIGHT-PADDING)) for _ in range(NUM_BOIDS)]
 
@@ -148,12 +150,14 @@ def main():
     spacing = 30
     # create slider instances
     sliders = [
-        Slider(50, HEIGHT - 6 * spacing, 200, 20, 0.00, 0.25, 0.01, "Alignment"),
-        Slider(50, HEIGHT - 5 * spacing, 200, 20, 0.00, 0.25, 0.01, "Cohesion"),
-        Slider(50, HEIGHT - 4 * spacing, 200, 20, 0.00, 0.25, 0.01, "Reward Attraction"),
-        Slider(50, HEIGHT - 3 * spacing, 200, 20, 10, 500, 150, "Reward Radius"),
-        Slider(50, HEIGHT - 2 * spacing, 200, 20, 0, 50, 15, "Avoid Radius"),
-        Slider(50, HEIGHT - spacing, 200, 20, 0, 150, 30, "Neighbor Radius"),
+        Slider(50, HEIGHT - 8 * spacing, 200, 20, 0.00, 0.25, 0.01, "Alignment"),
+        Slider(50, HEIGHT - 7 * spacing, 200, 20, 0.00, 0.25, 0.01, "Cohesion"),
+        Slider(50, HEIGHT - 6 * spacing, 200, 20, 0.00, 0.10, 0.01, "Reward Attraction"),
+        Slider(50, HEIGHT - 5 * spacing, 200, 20, 10, 500, 150, "Reward Radius"),
+        Slider(50, HEIGHT - 4 * spacing, 200, 20, 0, 50, 15, "Avoid Radius"),
+        Slider(50, HEIGHT - 3 * spacing, 200, 20, 0, 150, 30, "Neighbor Radius"),
+        Slider(50, HEIGHT - 2 *  spacing, 200, 20, 1, 20, 4, "Boid Radius"),
+        Slider(50, HEIGHT - 1 * spacing, 200, 20, 0.00, 0.2, 0.05, "Separation"),
     ]
 
     while running:
@@ -176,6 +180,8 @@ def main():
         ATTRACT_RADIUS = sliders[3].val
         AVOID_RADIUS = sliders[4].val
         NEIGHBOR_RADIUS = sliders[5].val
+        BOID_RADIUS = sliders[6].val
+        SEPARATION_COEFF = sliders[7].val
         
         screen.fill(BLACK)
         
