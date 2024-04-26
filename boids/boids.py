@@ -130,11 +130,16 @@ class Boid:
         pygame.draw.line(screen, WHITE, (int(self.x), int(self.y)), (int(self.x + 10*self.velocity_x), int(self.y + 10*self.velocity_y)), width=2)
 
 # Drawing text onto the screen
-def draw_text(screen, text, position, size=30, color=WHITE, font_name = "Monospace"):
+def draw_text(screen, text, position, size=30, color=WHITE, font_name = "Monospace", alignment="center"):
     font = pygame.font.SysFont(font_name, size)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect()
-    text_rect.center = position
+
+    # adjust alignment
+    if alignment == "left":
+        text_rect.topleft = position
+    else: # default to center if not left
+        text_rect.center = position
     screen.blit(text_surface, text_rect)
 
 # Main function
@@ -152,7 +157,7 @@ def main():
     sliders = [
         Slider(50, HEIGHT - 8 * spacing, 200, 20, 0.00, 0.25, 0.01, "Alignment"),
         Slider(50, HEIGHT - 7 * spacing, 200, 20, 0.00, 0.25, 0.01, "Cohesion"),
-        Slider(50, HEIGHT - 6 * spacing, 200, 20, 0.00, 0.10, 0.01, "Reward Attraction"),
+        Slider(50, HEIGHT - 6 * spacing, 200, 20, 0.00, 0.01, 0.001, "Reward Attraction"),
         Slider(50, HEIGHT - 5 * spacing, 200, 20, 10, 500, 150, "Reward Radius"),
         Slider(50, HEIGHT - 4 * spacing, 200, 20, 0, 50, 15, "Avoid Radius"),
         Slider(50, HEIGHT - 3 * spacing, 200, 20, 0, 150, 30, "Neighbor Radius"),
@@ -204,7 +209,11 @@ def main():
             draw_text(screen, "Paused", (WIDTH // 2, 50), color=YELLOW)
         
         # Print counter on screen
-        draw_text(screen,f"Iteration:{str(counter)}", (100, 30), size= 20, font_name="Arial")
+        UI_x = 100
+        UI_y = 30
+        draw_text(screen,f"Iteration:{str(counter)}", (UI_x, UI_y), size= 20, font_name="Arial")
+        draw_text(screen,f"SPACE to pause", (UI_x - 60, UI_y + 30), size= 15, font_name="Arial", alignment="left")
+        draw_text(screen,f"CLICK to add reward", (UI_x - 60 , UI_y + 60), size= 15, font_name="Arial", alignment="left")
 
         # draw title
         draw_text(screen, "Boid Simulation", (WIDTH // 2, 20))

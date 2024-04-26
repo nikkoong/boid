@@ -18,7 +18,7 @@ class Slider:
         pygame.draw.rect(screen, (255,255,255), self.rect, 1)
         pygame.draw.rect(screen, (0,255,0), self.knob)
         font = pygame.font.SysFont('Arial', 16)
-        text_surf = font.render(f'{self.label}: {self.val:.2f}', True, (255,255,255))
+        text_surf = font.render(f'{self.label}: {self.val:.3f}', True, (255,255,255))
         screen.blit(text_surf, (self.rect.x + self.rect.width +10, self.rect.y))
 
     def handle_event(self, event):
