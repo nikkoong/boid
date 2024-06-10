@@ -1,7 +1,11 @@
 # boid
 Boid demo with interactive sliders
 
-Based on the [boid](https://people.ece.cornell.edu/land/courses/ece4760/labs/s2021/Boids/Boids.html#:~:text=Boids%20is%20an%20artificial%20life,very%20simple%20set%20of%20rules.) algorithm.
+Particle Swarm Opimization (PSO) was developed in 1995, inspired by the [boid](https://people.ece.cornell.edu/land/courses/ece4760/labs/s2021/Boids/Boids.html#:~:text=Boids%20is%20an%20artificial%20life,very%20simple%20set%20of%20rules.) algorithm from Craig Reynolds (1987). Each boid, or "bird object" follows 3 rules: avoid crowding neighbors, align with neighbors, and move towards the center of the flock.
+
+PSO takes inspiration from the collective swarm behavior of boids, but is instead a computational optimization technique used in engineering, science, and finance. For instance, it can be used to find the maximum value of a non-differentiable function. This repo is an introduction to the boid algorithm and behavior, and will later delve into applying this visual treatment of flocking behavior to optimization problems.
+
+![boid gif](boid.gif)
 
 This version uses Pygame, and has sliders that can be used to change some of the important values for the boid algorithm.
 
